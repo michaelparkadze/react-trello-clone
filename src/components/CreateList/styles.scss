@@ -1,0 +1,17 @@
+.create-list {
+  width: 272px;
+  margin: 0px 4px;
+  height: 100%;
+  display: inline-block;
+
+  > form {
+    color: #ffffff;
+    cursor: pointer;
+    background-color: hsla(0, 0%, 100%, 0.24);
+    border-radius: 3px;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 4px 12px;
+    font-size: 0.875rem;
+  }
+}

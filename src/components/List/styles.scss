@@ -1,0 +1,41 @@
+.list-container {
+  width: 272px;
+  margin: 0px 4px;
+  height: 100%;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;
+  &__content {
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    position: relative;
+    white-space: normal;
+    background-color: #ebecf0;
+    &__header {
+    }
+    &__cards {
+      flex: 1 1 auto;
+      margin-bottom: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 0 4px;
+      padding: 0 4px;
+      z-index: 1;
+      min-height: 0;
+    }
+    &__create-card {
+      cursor: pointer;
+      border-radius: 3px;
+      &:hover {
+        background-color: rgba(9, 30, 66, 0.13);
+      }
+    }
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}

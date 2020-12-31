@@ -1,0 +1,9 @@
+.card-container {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  &:hover {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,23 @@
+.create-card {
+  min-height: 38px;
+  max-height: 38px;
+  display: flex;
+  justify-content: space-between;
+  > a {
+    font-size: 0.875rem;
+    border-radius: 3px;
+    color: #5e6c84;
+    display: block;
+    flex: 1 0 auto;
+    margin: 2px 0 8px 0px;
+    padding: 4px 8px;
+    position: relative;
+    text-decoration: none;
+    -webkit-user-select: none;
+    user-select: none;
+    &:hover {
+      outline: none;
+      background-color: rgba(9, 30, 66, 0.13);
+    }
+  }
+}
