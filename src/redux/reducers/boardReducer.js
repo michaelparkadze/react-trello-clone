@@ -24,11 +24,12 @@ export default (state = initialState, action) => {
       const { boardId, id } = action.payload;
 
       // const board = state[boardId];
-      const board = state.boards.find((board) => board.id === boardId);
+      const boardsClone = [...state.boards];
+      const board = boardsClone.find((item) => item.id === boardId);
       const newListId = `list-${id}`;
       const newLists = [...board.lists, newListId];
       board.lists = newLists;
-      return { ...state, [boardId]: board };
+      return { ...state, boards: boardsClone };
     }
 
     case DRAG_HAPPENED: {
