@@ -15,7 +15,7 @@ export default function Board(props) {
   const [board, setBoard] = useState();
 
   const { boards } = useSelector((state) => state.boardReducer);
-  const lists = useSelector((state) => state.listReducer);
+  const { lists } = useSelector((state) => state.listReducer);
   const cards = useSelector((state) => state.cardReducer);
 
   const { id, title } = props.match.params;
@@ -46,7 +46,7 @@ export default function Board(props) {
   };
 
   const handleCreateList = () => {
-    dispatch(addList("Hello"));
+    dispatch(addList("Some title"));
   };
 
   return (
@@ -60,7 +60,7 @@ export default function Board(props) {
               ref={provided.innerRef}
             >
               {board?.lists.map((listId, index) => {
-                const list = lists[listId];
+                const list = lists.find((item) => item.id === listId);
                 if (list) {
                   const listCards = list.cards.map((cardId) => cards[cardId]);
 

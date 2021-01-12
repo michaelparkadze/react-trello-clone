@@ -36,7 +36,7 @@ export default function List(props) {
         >
           <div className="list-container__content">
             <div className="list-container__content__header">
-              <ListHeader title={title} />
+              <ListHeader title={title} listId={listId} />
             </div>
             <div className="list-container__content__cards">
               <Droppable droppableId={String(listId)} type="card">
