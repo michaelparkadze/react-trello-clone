@@ -9,16 +9,15 @@ import Card from "../Card";
 import "./styles.scss";
 
 export default function List(props) {
-  const [listCards, setListCards] = useState(null);
+  const [creatingCard, setCreatingCard] = useState(false);
   const dispatch = useDispatch();
   const { listId, index, title, cards } = props;
 
-  // useEffect(() => {
-  //   setListCards(cards);
-  // }, [cards]);
-
-  const handleCreateCard = () => {
-    dispatch(createCard({ listId, title: "new card alert" }));
+  const handleCreating = () => {
+    setCreatingCard(!creatingCard);
+  };
+  const handleCreateCard = (title) => {
+    dispatch(createCard({ listId, title: title }));
   };
 
   const handleDeleteList = () => {
@@ -54,7 +53,11 @@ export default function List(props) {
                       );
                     })}
                     {provided.placeholder}
-                    <CreateCard handleCreateCard={handleCreateCard} />
+                    <CreateCard
+                      handleCreating={handleCreating}
+                      handleCreateCard={handleCreateCard}
+                      creatingCard={creatingCard}
+                    />
                   </div>
                 )}
               </Droppable>
