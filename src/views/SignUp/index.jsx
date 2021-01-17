@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useHistory, Link } from "react-router-dom";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, Icon } from "antd";
+import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import "./styles.scss";
-import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
-export default function SignIn() {
+export default function SignUp() {
   const history = useHistory();
   const [userDetails, setUserDetails] = useState({
+    fullName: "",
     email: "",
     password: "",
     error: null,
@@ -16,11 +17,14 @@ export default function SignIn() {
   const handleOnSubmit = (event) => {
     event.preventDefault();
 
-    const { email, password } = userDetails;
+    const { fullName, email, password } = userDetails;
 
     return auth
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => history.push("/boards"))
+      .doCreateUserWithEmailAndPassword(email, password, fullName)
+      .then((authUser) => {
+        db.doCreateUser(authUser.user.uid, fullName, email);
+        history.push("/boards");
+      })
       .catch((error) =>
         setUserDetails((prevState) => ({ ...prevState, error: error.message }))
       );
@@ -35,15 +39,28 @@ export default function SignIn() {
   };
 
   return (
-    <div className="sign-in-container">
+    <div className="sign-up-container">
       <Form>
-        <h1>Sign in</h1>
+        <h1>Sign up</h1>
+
+        <Form.Item
+          name="fullName"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input
+            type="text"
+            name="fullName"
+            placeholder="Enter your full name"
+            onChange={(e) => handleOnChange(e)}
+            prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          />
+        </Form.Item>
         <Form.Item
           name="email"
           rules={[{ required: true, message: "Please input your username!" }]}
         >
           <Input
-            type="email"
+            type="text"
             name="email"
             placeholder="Enter your email address"
             onChange={(e) => handleOnChange(e)}
@@ -57,14 +74,27 @@ export default function SignIn() {
           <Input.Password
             name="password"
             type="password"
-            placeholder="Enter your password"
+            placeholder="Enter a password"
             onChange={(e) => handleOnChange(e)}
             prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
           />
         </Form.Item>
+        <Form.Item
+          name="confirmPassword"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm password"
+            onChange={(e) => handleOnChange(e)}
+            prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          />
+        </Form.Item>
+
         <Form.Item>
           <Button type="primary" block onClick={(e) => handleOnSubmit(e)}>
-            Sign in
+            Sign up
           </Button>
         </Form.Item>
         {userDetails.error && (
@@ -73,10 +103,7 @@ export default function SignIn() {
           </div>
         )}
         <Form.Item>
-          <div style={{ marginBottom: "12px" }}>
-            <Link to="/forgot-password">Forgot your password?</Link>
-          </div>
-          Don't have an account? <Link to="/sign-up">Sign up</Link>
+          Already have an account? <Link to="/sign-in">Sign in</Link>
         </Form.Item>
       </Form>
     </div>
