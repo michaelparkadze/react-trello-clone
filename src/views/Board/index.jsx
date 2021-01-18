@@ -40,8 +40,14 @@ export default function Board() {
   const handleCreateList = (listTitle) => {
     db.doCreateList(boardKey, { title: listTitle }).then((res) => {
       const copiedLists = [...lists];
+      const copiedCards = [...cards];
+      copiedCards.push({
+        listKey: res.key,
+        cards: [],
+      });
       copiedLists.push(res);
       setLists(copiedLists);
+      setCards(copiedCards);
     });
   };
 
@@ -157,7 +163,6 @@ export default function Board() {
 
         const card = startList.splice(droppableIndexStart, 1);
         endList.splice(droppableIndexEnd, 0, ...card);
-        console.log(cardsClone);
 
         setCards(cardsClone);
         db.doMoveCard({
@@ -182,6 +187,7 @@ export default function Board() {
         "Loading"
       ) : (
         <DragDropContext onDragEnd={handleOnDragEnd}>
+          <button onClick={() => console.log(cards)}>check state</button>
           <Droppable droppableId="all-lists" direction="horizontal" type="list">
             {(provided) => (
               <div
