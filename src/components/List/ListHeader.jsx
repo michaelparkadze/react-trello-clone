@@ -12,22 +12,21 @@ export default function ListHeader(props) {
 
   return (
     <>
-      {
-        isEditing ? (
-          <form
-            onSubmit={() => setIsEditing(false)}
-            onBlur={() => setIsEditing(false)}
-          >
-            <input
-              type="text"
-              value={headerTitle}
-              // onChange={(e) => handleTitleChange(e)}
-              autoFocus
-            />
-          </form>
-        ) : null
-        // <div onClick={() => handleEnableEdit()}>{title}</div>
-      }
+      {isEditing ? (
+        <form
+          onSubmit={() => setIsEditing(false)}
+          onBlur={() => setIsEditing(false)}
+        >
+          <input
+            type="text"
+            value={headerTitle}
+            // onChange={(e) => handleTitleChange(e)}
+            autoFocus
+          />
+        </form>
+      ) : (
+        <div>{title}</div>
+      )}
     </>
   );
 }

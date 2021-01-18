@@ -9,6 +9,7 @@ import { mergeDataWithKey } from "../../utils";
 
 export default function List(props) {
   const [cardTitle, setCardTitle] = useState("");
+  const [creatingCard, setCreatingCard] = useState(false);
 
   const {
     cards,
@@ -31,15 +32,13 @@ export default function List(props) {
         };
         console.log(data);
         setCards(data);
-        // const updatedCards = [...cards];
-        // updatedCards[listKey] = mergeDataWithKey(snapshotVal);
-        // setCards(updatedCards.sort((a, b) => a.index - b.index));
-        // handleSetCardsData(updatedCards);
-        // handleSetCardsData(updatedCards.sort((a, b) => a.index - b.index));
       }
     });
   }, []);
-  // const handleCreateList = ()
+
+  const handleCreatingCard = () => {
+    setCreatingCard(!creatingCard);
+  };
 
   return (
     <Draggable key={listKey} draggableId={String(listKey)} index={index}>
@@ -58,7 +57,7 @@ export default function List(props) {
               <Droppable droppableId={String(listKey)} type="card">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    <input
+                    {/* <input
                       type="text"
                       value={cardTitle}
                       onChange={(e) => setCardTitle(e.target.value)}
@@ -73,7 +72,7 @@ export default function List(props) {
                       }}
                     >
                       create card
-                    </button>
+                    </button> */}
 
                     {cards &&
                       cards.cards?.map((card, index) => (
@@ -86,6 +85,12 @@ export default function List(props) {
                         />
                       ))}
                     {provided.placeholder}
+                    <CreateCard
+                      listKey={listKey}
+                      creatingCard={creatingCard}
+                      handleCreatingCard={handleCreatingCard}
+                      handleCreateCard={handleCreateCard}
+                    />
                   </div>
                 )}
               </Droppable>

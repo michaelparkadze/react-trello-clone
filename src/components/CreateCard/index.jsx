@@ -3,7 +3,7 @@ import "./styles.scss";
 
 export default function CreateCard(props) {
   const [cardTitle, setCardTitle] = useState("");
-  const { handleCreateCard, creatingCard, handleCreating } = props;
+  const { listKey, handleCreateCard, creatingCard, handleCreatingCard } = props;
   return (
     <div className="create-card">
       {creatingCard ? (
@@ -13,30 +13,30 @@ export default function CreateCard(props) {
             onChange={(e) => setCardTitle(e.target.value)}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                handleCreateCard(cardTitle);
-                handleCreating();
+                handleCreateCard({ cardTitle, listKey });
+                handleCreatingCard();
               }
             }}
             autoFocus
           />
           <button
             onClick={() => {
-              handleCreating();
+              handleCreatingCard();
             }}
           >
             Cancel
           </button>
           <button
             onClick={() => {
-              handleCreateCard(cardTitle);
-              handleCreating();
+              handleCreateCard({ cardTitle, listKey });
+              handleCreatingCard();
             }}
           >
             Create
           </button>
         </div>
       ) : (
-        <a onClick={handleCreating}>+ Add another card</a>
+        <a onClick={handleCreatingCard}>+ Add another card</a>
       )}
     </div>
   );

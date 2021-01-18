@@ -182,7 +182,6 @@ export default function Board() {
         "Loading"
       ) : (
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <button onClick={() => console.log(cards)}>check state</button>
           <Droppable droppableId="all-lists" direction="horizontal" type="list">
             {(provided) => (
               <div
@@ -194,7 +193,7 @@ export default function Board() {
                   const listCards = cards.find(
                     (cards) => cards.listKey === list.key
                   );
-                  // console.log(listCards);
+
                   return (
                     <List
                       key={list.key}
