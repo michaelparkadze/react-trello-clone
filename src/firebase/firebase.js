@@ -9,6 +9,8 @@ var config = {
   storageBucket: "react-trello-clone-42c7f.appspot.com",
   messagingSenderId: "652768543378",
   appId: "1:652768543378:web:56a191aca122cf4e495c4b",
+  databaseURL:
+    "https://react-trello-clone-42c7f-default-rtdb.europe-west1.firebasedatabase.app/",
 };
 
 if (!firebase.apps.length) {

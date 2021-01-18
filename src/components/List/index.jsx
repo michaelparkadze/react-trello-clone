@@ -1,31 +1,48 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { createCard } from "../../redux/actions/cardActions";
-import { deleteList } from "../../redux/actions/listActions";
 import CreateCard from "../CreateCard";
 import ListHeader from "./ListHeader";
 import Card from "../Card";
 import "./styles.scss";
+import { db } from "../../firebase";
+import { mergeDataWithKey } from "../../utils";
 
 export default function List(props) {
-  const [creatingCard, setCreatingCard] = useState(false);
-  const dispatch = useDispatch();
-  const { listId, index, title, cards } = props;
+  const [cardTitle, setCardTitle] = useState("");
 
-  const handleCreating = () => {
-    setCreatingCard(!creatingCard);
-  };
-  const handleCreateCard = (title) => {
-    dispatch(createCard({ listId, title: title }));
-  };
+  const {
+    cards,
+    setCards,
+    listTitle,
+    listKey,
+    handleCreateCard,
+    index,
+  } = props;
 
-  const handleDeleteList = () => {
-    dispatch(deleteList(listId));
-  };
+  useEffect(() => {
+    db.onceGetCard(listKey).then((snapshot) => {
+      const snapshotVal = snapshot.val();
+      if (snapshotVal) {
+        const data = {
+          listKey,
+          cards: mergeDataWithKey(snapshotVal).sort(
+            (a, b) => a.index - b.index
+          ),
+        };
+        console.log(data);
+        setCards(data);
+        // const updatedCards = [...cards];
+        // updatedCards[listKey] = mergeDataWithKey(snapshotVal);
+        // setCards(updatedCards.sort((a, b) => a.index - b.index));
+        // handleSetCardsData(updatedCards);
+        // handleSetCardsData(updatedCards.sort((a, b) => a.index - b.index));
+      }
+    });
+  }, []);
+  // const handleCreateList = ()
 
   return (
-    <Draggable key={listId} draggableId={String(listId)} index={index}>
+    <Draggable key={listKey} draggableId={String(listKey)} index={index}>
       {(provided) => (
         <div
           className="list-container"
@@ -35,29 +52,40 @@ export default function List(props) {
         >
           <div className="list-container__content">
             <div className="list-container__content__header">
-              <ListHeader title={title} listId={listId} />
+              <ListHeader title={listTitle} listKey={listKey} />
             </div>
             <div className="list-container__content__cards">
-              <Droppable droppableId={String(listId)} type="card">
+              <Droppable droppableId={String(listKey)} type="card">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {cards?.map((card, index) => {
-                      return (
-                        <Card
-                          key={card.id}
-                          index={index}
-                          id={card.id}
-                          title={card.title}
-                          listId={listId}
-                        />
-                      );
-                    })}
-                    {provided.placeholder}
-                    <CreateCard
-                      handleCreating={handleCreating}
-                      handleCreateCard={handleCreateCard}
-                      creatingCard={creatingCard}
+                    <input
+                      type="text"
+                      value={cardTitle}
+                      onChange={(e) => setCardTitle(e.target.value)}
                     />
+                    <button onClick={() => console.log(cards)}>
+                      check cards
+                    </button>
+                    <button
+                      onClick={() => {
+                        cardTitle !== "" &&
+                          handleCreateCard({ cardTitle, listKey });
+                      }}
+                    >
+                      create card
+                    </button>
+
+                    {cards &&
+                      cards.cards?.map((card, index) => (
+                        <Card
+                          key={card.key}
+                          index={index}
+                          cardKey={card.key}
+                          title={card.title}
+                          listKey={listKey}
+                        />
+                      ))}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>

@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 import "./styles.scss";
 
 export default function Card(props) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const { index, id, title } = props;
+  const { index, key, title, cardKey } = props;
   return (
-    <Draggable draggableId={String(id)} index={index}>
+    <Draggable draggableId={String(cardKey)} index={index}>
       {(provided) => (
         <>
           <div

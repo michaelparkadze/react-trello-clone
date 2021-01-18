@@ -59,12 +59,37 @@ export const onceGetBoard = (key) => {
   return boardsRef.child(uid).child(`${key}`).once("value");
 };
 
+export const onListMove = async (params) => {
+  const { boardKey, lists } = params;
+  console.log(lists);
+  var updates = {};
+
+  lists.forEach((list, index) => {
+    console.log(listsRef);
+    const newList = { ...list, index };
+    updates[list.key] = newList;
+  });
+
+  listsRef.child(boardKey).update(updates);
+};
+
 export const onceGetLists = (key) => listsRef.child(key).once("value");
 
 export const doCreateList = async (boardKey, list) => {
+  let listIndex;
+  // Get amount of lists to determine new list index
+  listsRef
+    .child(boardKey)
+    .once("value")
+    .then((snapshot) => {
+      const listsObject = snapshot.val();
+      listIndex = Object.keys(listsObject).length;
+    });
+
   const id = listsRef.push().key;
   await listsRef.child(boardKey).child(id).set(list);
   list.key = id;
+  list.index = listIndex - 1;
   return list;
 };
 
@@ -85,10 +110,24 @@ export const doUpdateList = async (boardKey, listKey, list) => {
   return list;
 };
 
-export const doAddCard = (listKey, cardTitle) =>
+export const doAddCard = async (listKey, cardTitle) => {
+  let cardIndex;
+  // Get amount of lists to determine new list index
+  await db
+    .ref(`cards/${listKey}`)
+    .once("value")
+    .then((snapshot) => {
+      const cardsObject = snapshot.val();
+      if (cardsObject !== undefined && cardsObject !== null) {
+        cardIndex = Object.keys(cardsObject).length;
+      } else cardIndex = 0;
+    });
+
   db.ref(`cards/${listKey}`).push({
     title: cardTitle,
+    index: cardIndex,
   });
+};
 
 export const onceGetCard = (listKey) =>
   db.ref(`cards/${listKey}`).once("value");
@@ -104,16 +143,54 @@ export const doEditCard = async (listKey, cardKey, card) => {
   return card;
 };
 
-export const doMoveCard = (oldListKey, newListKey, cardKey, card) =>
-  db
+export const doMoveCard = async (params) => {
+  const { oldListKey, newListKey, cardKey, newIndex, cards } = params;
+
+  // we copy the card details
+  // we remove it from the old list
+  // and we insert it in the new list
+
+  // If its same list
+  // Change
+
+  let card;
+  await db
     .ref(`cards/${oldListKey}`)
     .child(`${cardKey}`)
+    .once("value")
+    .then((snapshot) => {
+      card = snapshot.val();
+    });
+
+  var updates = {};
+
+  cards.forEach((card, index) => {
+    const newCard = { ...card, index };
+    updates[card.key] = newCard;
+  });
+
+  db.ref(`cards/${oldListKey}`)
+    .child(`${cardKey}`)
     .remove()
-    .then(() =>
-      db.ref(`cards/${newListKey}/${cardKey}`).set({
-        ...card,
-      })
-    );
+    .then(() => {
+      // remove the card from old list
+      // and update all cards on new list
+
+      db.ref(`cards/${newListKey}`).update(updates);
+      // console.log("editing ");
+    });
+
+  return onceGetCard(newListKey);
+
+  // db.ref(`cards/${oldListKey}`)
+  //   .child(`${cardKey}`)
+  //   .remove()
+  //   .then(() =>
+  //     db.ref(`cards/${newListKey}/${cardKey}`).set({
+  //       ...card,
+  //     })
+  //   );
+};
 
 export const doDeleteCard = (listKey, cardKey) =>
   db.ref(`cards/${listKey}/`).child(`${cardKey}`).remove();
