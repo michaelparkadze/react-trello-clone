@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "antd";
 import "./styles.scss";
 
 export default function CreateCard(props) {
@@ -10,52 +11,57 @@ export default function CreateCard(props) {
     if (cardTitle !== "") {
       handleCreateCard({ cardTitle, listKey });
       setCardTitle("");
+      handleCreatingCard(false);
     }
-
-    //     handleCreatingCard();
   };
+
   return (
     <div className="create-card">
       {creatingCard ? (
-        <form
-          className="create-card-form"
-          onSubmit={(event) => handleOnSubmit(event)}
-          // onBlur={(event) => handleOnSubmit(event)}
-        >
-          <input
-            type="text"
+        <div className="create-card-form-container">
+          <textarea
             value={cardTitle}
+            placeholder="Enter the title for this card..."
+            onSubmit={(event) => handleOnSubmit(event)}
+            // onBlur={() => {
+            //   setCardTitle("");
+            //   handleCreatingCard(false);
+            // }}
             onChange={(e) => setCardTitle(e.target.value)}
             autoFocus
-          />
-        </form>
+          ></textarea>
+          <Button
+            type="primary"
+            style={{
+              borderRadius: "12px",
+              fontWeight: 500,
+              border: "rgb(60, 64, 82)",
+              backgroundImage: "linear-gradient(45deg, #606c88, #3f4c6b)",
+              marginRight: "8px",
+            }}
+            onClick={(event) => handleOnSubmit(event)}
+          >
+            Create
+          </Button>
+          <Button
+            type="primary"
+            shape="circle"
+            style={{
+              fontWeight: 500,
+              color: "#3f4c6b",
+              backgroundColor: "#fff",
+              boxShadow: "none",
+              border: "1px solid #3f4c6b",
+            }}
+            onClick={() => {
+              setCardTitle("");
+              handleCreatingCard(false);
+            }}
+          >
+            X
+          </Button>
+        </div>
       ) : (
-        // <input
-        //   type="text"
-        //   onChange={(e) => setCardTitle(e.target.value)}
-        //   onKeyPress={(e) => {
-        //     if (e.key === "Enter") {
-        //       handleCreateCard({ cardTitle, listKey });
-        //       handleCreatingCard();
-        //     }
-        //   }}
-        //   autoFocus
-        // />
-        // <button
-        //   onClick={() => {
-        //     handleCreatingCard();
-        //   }}
-        // >
-        //   Cancel
-        // </button>
-        // <button
-        //   onClick={() => {
-        //     handleCreateCard({ cardTitle, listKey });
-        //     handleCreatingCard();
-        //   }}
-        // >
-        //   Create
-        // </button>
         <a onClick={handleCreatingCard}>+ Add Card</a>
       )}
     </div>

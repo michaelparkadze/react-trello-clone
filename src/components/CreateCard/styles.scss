@@ -1,9 +1,20 @@
 .create-card {
   display: flex;
-  background-color: rgba(245, 250, 255, 1);
   border-radius: 12px;
   font-weight: 500;
-  .create-card-form {
+  .create-card-form-container {
+    padding-bottom: 6px;
+    > textarea {
+      width: 100%;
+      resize: none;
+      outline: none;
+      border-radius: 14px;
+      background-color: #ffffff;
+      border: 1px solid rgb(224, 229, 224);
+      padding: 12px 16px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
   }
   > a {
     text-align: center;
@@ -18,10 +29,12 @@
     -webkit-user-select: none;
     user-select: none;
     border-radius: inherit;
+    background-color: rgba(245, 250, 255, 1);
+
     border: 1px solid rgba(234, 239, 246, 1);
     &:hover {
       outline: none;
-      background-color: rgba(9, 30, 66, 0.03);
+      background-color: rgb(234, 245, 255);
     }
   }
 }
