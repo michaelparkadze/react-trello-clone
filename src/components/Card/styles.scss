@@ -1,8 +1,12 @@
 .card-container {
-  padding: 12px;
+  padding: 12px 16px;
   margin-bottom: 12px;
+  border-radius: 12px;
   background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgb(224, 229, 224);
+  &__content {
+    font-weight: 500;
+  }
   &:hover {
     cursor: pointer;
   }

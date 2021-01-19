@@ -1,23 +1,27 @@
 .create-card {
-  // min-height: 38px;
-  // max-height: 38px;
   display: flex;
-  justify-content: space-between;
+  background-color: rgba(245, 250, 255, 1);
+  border-radius: 12px;
+  font-weight: 500;
+  .create-card-form {
+  }
   > a {
+    text-align: center;
     font-size: 0.875rem;
     border-radius: 3px;
     color: #5e6c84;
     display: block;
     flex: 1 0 auto;
-    margin: 2px 0 8px 0px;
-    padding: 4px 8px;
+    padding: 8px 8px;
     position: relative;
     text-decoration: none;
     -webkit-user-select: none;
     user-select: none;
+    border-radius: inherit;
+    border: 1px solid rgba(234, 239, 246, 1);
     &:hover {
       outline: none;
-      background-color: rgba(9, 30, 66, 0.13);
+      background-color: rgba(9, 30, 66, 0.03);
     }
   }
 }

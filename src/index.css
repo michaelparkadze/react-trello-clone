@@ -4,6 +4,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  color: rgb(60, 64, 82);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -29,27 +30,27 @@ code {
 
 /* width */
 ::-webkit-scrollbar {
-  height: 12px;
-  width: 12px;
+  height: 9px;
+  width: 9px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.15);
-  margin: 0px 6px;
+  background: rgba(215, 224, 234, 0.3);
+  /* margin: 0px 6px; */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.22);
-  border-radius: 3px;
+  background: rgba(215, 224, 234, 1);
+  border-radius: 16px;
   height: 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.12);
+  background: rgb(201, 209, 219);
 }
 
 /* ::-webkit-scrollbar-track-piece {

@@ -17,7 +17,7 @@ export const doCreateBoard = async (board) => {
   const uid = getUser().uid;
   const id = boardsRef.push().key;
   await boardsRef.child(uid).child(id).set(board);
-  board.key = id;
+  board.boardKey = id;
   return board;
 };
 

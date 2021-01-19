@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { mergeDataWithKey } from "../../utils";
+import { db } from "../../firebase";
 import CreateCard from "../CreateCard";
 import ListHeader from "./ListHeader";
 import Card from "../Card";
 import "./styles.scss";
-import { db } from "../../firebase";
-import { mergeDataWithKey } from "../../utils";
 
 export default function List(props) {
-  const [cardTitle, setCardTitle] = useState("");
   const [creatingCard, setCreatingCard] = useState(false);
 
   const {
@@ -17,6 +16,8 @@ export default function List(props) {
     listTitle,
     listKey,
     handleCreateCard,
+    handleUpdateList,
+    handleDeleteList,
     index,
   } = props;
 
@@ -30,7 +31,6 @@ export default function List(props) {
             (a, b) => a.index - b.index
           ),
         };
-        console.log(data);
         setCards(data);
       }
     });
@@ -49,31 +49,17 @@ export default function List(props) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
+          <ListHeader
+            title={listTitle}
+            listKey={listKey}
+            handleUpdateList={handleUpdateList}
+            handleDeleteList={handleDeleteList}
+          />
           <div className="list-container__content">
-            <div className="list-container__content__header">
-              <ListHeader title={listTitle} listKey={listKey} />
-            </div>
             <div className="list-container__content__cards">
               <Droppable droppableId={String(listKey)} type="card">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {/* <input
-                      type="text"
-                      value={cardTitle}
-                      onChange={(e) => setCardTitle(e.target.value)}
-                    />
-                    <button onClick={() => console.log(cards)}>
-                      check cards
-                    </button>
-                    <button
-                      onClick={() => {
-                        cardTitle !== "" &&
-                          handleCreateCard({ cardTitle, listKey });
-                      }}
-                    >
-                      create card
-                    </button> */}
-
                     {cards &&
                       cards.cards?.map((card, index) => (
                         <Card
