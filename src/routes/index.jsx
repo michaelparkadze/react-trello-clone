@@ -10,13 +10,11 @@ export default function Routes() {
   const { pathname } = useLocation();
   return (
     <>
-      {/* <button onClick={() => console.log(pathname)}>onClick</button> */}
       {!pathname.includes("sign") && <Nav />}
 
       <Switch>
-        {/* <Redirect from="/" to="/boards" /> */}
         <PrivateRoute path="/boards" exact component={Boards} />
-        <PrivateRoute path="/b/:id/:title" component={Board} />
+        <PrivateRoute path="/b/:id/" component={Board} />
         <Route path="/sign-in" component={SignIn} />
         <Route path="/sign-up" component={SignUp} />
         <Redirect from="/" to="/boards" />

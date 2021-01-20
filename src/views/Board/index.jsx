@@ -1,29 +1,32 @@
 import { useEffect, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { getBoardKey, mergeDataWithKey } from "../../utils/index";
+import { useHistory } from "react-router-dom";
+import { db } from "../../firebase";
 import List from "../../components/List";
 import CreateList from "../../components/CreateList";
-import { getBoardKey, mergeDataWithKey } from "../../utils/index";
-import { db } from "../../firebase";
+import Loader from "../../components/Loader";
+import BoardTitle from "../../components/BoardTitle";
 import "./styles.scss";
 
 export default function Board() {
-  const history = useHistory();
-
   const [lists, setLists] = useState([]);
   const [cards, setCards] = useState([]);
+  const [board, setBoard] = useState([]);
   const [boardKey, setBoardKey] = useState("");
   const [loading, setLoading] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     setLoading(true);
     const boardKey = getBoardKey();
     Promise.all([db.onceGetBoard(boardKey), db.onceGetLists(boardKey)])
       .then((snapshots) => {
+        const board = snapshots[0].val();
         const lists = mergeDataWithKey(snapshots[1].val());
         setLists(lists.sort((a, b) => a.index - b.index));
-
+        setBoard(board);
         setBoardKey(boardKey);
         setLoading(false);
         setDataFetched(true);
@@ -51,10 +54,10 @@ export default function Board() {
       const copiedLists = [...lists];
       const copiedCards = [...cards];
       copiedCards.push({
-        listKey: res.listKey,
+        listKey: res.key,
         cards: [],
       });
-      // copiedLists.push(res);
+      copiedLists.push(res);
       console.log(res);
       setLists(copiedLists);
       setCards(copiedCards);
@@ -109,6 +112,19 @@ export default function Board() {
       const copiedLists = [...lists];
       const updatedLists = copiedLists.filter((list) => list.key !== listKey);
       setLists(updatedLists);
+    });
+  };
+
+  const handleDeleteBoard = (boardKey) => {
+    return db.doDeleteBoard(boardKey).then(() => {
+      history.push("/boards");
+    });
+  };
+
+  const handleUpdateBoard = (boardKey, title) => {
+    return db.doUpdateBoard(boardKey, title).then(() => {
+      const updatedBoard = { ...board, ...title };
+      setBoard(updatedBoard);
     });
   };
 
@@ -223,74 +239,61 @@ export default function Board() {
   return (
     <>
       {loading ? (
-        "Loading"
+        <Loader />
       ) : (
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <button
-            onClick={() => {
-              console.log(lists);
-              console.log(cards);
-            }}
-          >
-            check state
-          </button>
-          <div className="board-wrapper">
-            <Droppable
-              droppableId="all-lists"
-              direction="horizontal"
-              type="list"
-            >
-              {(provided) => (
-                <div
-                  className="lists-container"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {lists?.map((list, index) => {
-                    const listCards = cards.find(
-                      (cards) => cards.listKey === list.key
-                    );
+        <>
+          <BoardTitle
+            title={board.title}
+            boardKey={boardKey}
+            updateBoard={handleUpdateBoard}
+            deleteBoard={handleDeleteBoard}
+          />
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <div className="board-wrapper">
+              <Droppable
+                droppableId="all-lists"
+                direction="horizontal"
+                type="list"
+              >
+                {(provided) => (
+                  <div
+                    className="lists-container"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {lists?.map((list, index) => {
+                      const listCards = cards.find(
+                        (cards) => cards.listKey === list.key
+                      );
 
-                    return (
-                      <>
-                        <List
-                          key={list.key}
-                          listKey={list.key}
-                          listTitle={list.title}
-                          cards={listCards}
-                          setCards={handleSetCards}
-                          handleCreateCard={handleCreateCard}
-                          setDataFetched={setDataFetched}
-                          index={index}
-                          title={list.title}
-                          handleUpdateList={handleUpdateList}
-                          handleDeleteList={handleDeleteList}
-                        />
-                      </>
-                    );
-                  })}
+                      return (
+                        <>
+                          <List
+                            key={list.key}
+                            listKey={list.key}
+                            listTitle={list.title}
+                            cards={listCards}
+                            setCards={handleSetCards}
+                            handleCreateCard={handleCreateCard}
+                            setDataFetched={setDataFetched}
+                            index={index}
+                            title={list.title}
+                            handleUpdateList={handleUpdateList}
+                            handleDeleteList={handleDeleteList}
+                          />
+                        </>
+                      );
+                    })}
 
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-            <CreateList handleCreateList={handleCreateList} />
-          </div>
-        </DragDropContext>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+              <CreateList handleCreateList={handleCreateList} />
+            </div>
+          </DragDropContext>
+        </>
       )}
     </>
   );
-
-  // const handleDeleteBoard = (boardKey) => {
-  //   db.doDeleteBoard(boardKey).then(() => {
-  //     history.push("/boards");
-  //   });
-  // };
-
-  // const handleUpdateBoard = (boardKey, title) => {
-  //   db.doUpdateBoard(boardKey, title).then(() => {
-  //     const updatedBoard = { ...this.state.board, ...title };
-  //     setBoard(updatedBoard);
-  //   });
-  // };
 }

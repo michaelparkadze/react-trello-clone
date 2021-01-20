@@ -61,7 +61,9 @@ export default function ListHeader(props) {
         </form>
       ) : (
         <>
-          <div onClick={() => handleEnableEdit()}>{title}</div>
+          <div onClick={() => handleEnableEdit()} style={{ cursor: "pointer" }}>
+            {title}
+          </div>
         </>
       )}
       <Space direction="vertical">

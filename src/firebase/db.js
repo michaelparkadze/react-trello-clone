@@ -17,7 +17,7 @@ export const doCreateBoard = async (board) => {
   const uid = getUser().uid;
   const id = boardsRef.push().key;
   await boardsRef.child(uid).child(id).set(board);
-  board.boardKey = id;
+  board.key = id;
   return board;
 };
 
@@ -53,10 +53,10 @@ export const doEditBoard = async (boardKey, board) => {
   return board;
 };
 
-export const onceGetBoard = (key) => {
+export const onceGetBoard = (boardKey) => {
   const uid = getUser().uid;
 
-  return boardsRef.child(uid).child(`${key}`).once("value");
+  return boardsRef.child(uid).child(`${boardKey}`).once("value");
 };
 
 export const onListMove = async (params) => {

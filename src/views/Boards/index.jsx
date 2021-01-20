@@ -1,67 +1,44 @@
-import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import CreateBoardModal from "../../components/CreateBoardModal";
+import { useState, useEffect } from "react";
 import { mergeDataWithKey } from "../../utils";
-import { db, auth, firebase } from "../../firebase";
+import { db } from "../../firebase";
+import { Link } from "react-router-dom";
 import { Button } from "antd";
-import { UserContext } from "../../providers/UserProvider";
+import CreateBoardModal from "../../components/CreateBoardModal";
+import CreateBoardCard from "../../components/CreateBoardCard";
+import Loader from "../../components/Loader";
+
+import "./styles.scss";
 
 function Boards(props) {
-  const user = useContext(UserContext);
-  // const { authenticated } = props;
-  // const dispatch = useDispatch();
-
   const [modalOpen, setModalOpen] = useState(false);
   const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const { boards, error } = useSelector((state) => state.boardReducer);
-  // const [newBoardTitle, setNewBoardTitle] = useState("");
-
-  // useEffect(() => {}, []);
-  // const handleOnChange = (e) => {
-  //   const newBoardTitle = e.target.value;
-  //   setNewBoardTitle(newBoardTitle);
-  // };
 
   // Get boards
   useEffect(() => {
-    console.log(props);
-    // setLoading(true);
+    setLoading(true);
     db.onceGetBoards()
       .then((snapshot) => {
         if (!snapshot.val()) {
+          setLoading(false);
           return;
         }
         setBoards(mergeDataWithKey(snapshot.val()));
+        setLoading(false);
       })
       .catch((err) => {
-        console.log("erorr");
+        setLoading(false);
         console.error(err);
       });
-
-    // .then((snapshot) => {
-    //   console.log("something");
-    //   if (!snapshot.val()) {
-    //     return;
-    //   } else {
-    //     console.log("setting boards data");
-    //     setBoards(mergeDataWithKey(snapshot.val()));
-    //   }
-    // })
-    // .finally(() => {
-    //   console.log("shit");
-    //   setLoading(false);
-    // });
   }, []);
 
-  // Create a new board
   const handleCreateBoard = (board) => {
-    // console.log(board);
     db.doCreateBoard(board).then((response) => {
       console.log(response);
-      let updatedBoards = boards;
+      const updatedBoards = [...boards];
       updatedBoards.push(response);
       setBoards(updatedBoards);
+      setModalOpen(false);
     });
   };
 
@@ -74,52 +51,39 @@ function Boards(props) {
   };
 
   return (
-    <div>
-      aye
-      {boards?.map((board, index) => {
-        return (
-          <Link to={`b/${board.key}/${board.title}`} key={index}>
-            <div>{board.title}</div>
-          </Link>
-        );
-      })}
-      <CreateBoardModal
-        onCreateBoard={handleCreateBoard}
-        onCloseModal={handleModalClose}
-        visible={modalOpen}
-      />
-      <Button onClick={() => handleModalOpen()}>Create a board</Button>
-      <Button onClick={() => console.log(boards)}>Check boards</Button>
-      <Button onClick={auth.doSignOut}>Sign out</Button>
-    </div>
-  );
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="boards-view-container">
+          <div className="boards-container">
+            {boards.map((board, index) => {
+              return (
+                <>
+                  <Link
+                    index={index}
+                    to={{
+                      pathname: `b/${board.key}`,
+                      state: { boardKey: board.key },
+                    }}
+                  >
+                    <Button className="board-card">{board.title}</Button>
+                  </Link>
+                </>
+              );
+            })}
+            <CreateBoardCard onClick={() => handleModalOpen()} />
+          </div>
 
-  // return (
-  //   <div className="home-container">
-  //     <div className="home-container__boards">
-  //       {boards?.map((board, index) => {
-  //         return (
-  //           <Link to={`/b/${board.id}/${board.title}`}>
-  //             <button>{board.title}</button>
-  //           </Link>
-  //         );
-  //       })}
-  //     </div>
-  //     <form className="home-container__create-board" onSubmit={handleOnSubmit}>
-  //       <div className="home-container__create-board__title">
-  //         Create a new Board
-  //       </div>
-  //       <input
-  //         type="text"
-  //         placeholder="Your boards title..."
-  //         value={newBoardTitle}
-  //         onChange={handleOnChange}
-  //       />
-  //       <input type="submit" value="Create" />
-  //     </form>
-  //     {error && <span>{error}</span>}
-  //   </div>
-  // );
+          <CreateBoardModal
+            onCreateBoard={handleCreateBoard}
+            onCloseModal={handleModalClose}
+            visible={modalOpen}
+          />
+        </div>
+      )}
+    </>
+  );
 }
 
 export default Boards;

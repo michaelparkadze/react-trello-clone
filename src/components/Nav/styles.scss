@@ -1,5 +1,15 @@
 .nav {
-  background-color: #ffffff;
-  padding: 8px 16px;
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgb(224, 229, 224);
+  &__home {
+    > a {
+      > button {
+        // background-color: red;
+        // padding: 0 12px !important;
+      }
+    }
+  }
 }

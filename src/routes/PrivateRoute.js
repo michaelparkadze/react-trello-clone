@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
+import Loader from "../components/Loader";
 import { firebase } from "../firebase";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -18,7 +19,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   }, []);
 
   return loadingAuth ? (
-    "loading..."
+    <Loader />
   ) : (
     <Route
       {...rest}

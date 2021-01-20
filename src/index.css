@@ -18,6 +18,8 @@ body {
 
 * {
   box-sizing: border-box;
+  appearance: none;
+  text-decoration: none;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;

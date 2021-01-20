@@ -11,7 +11,8 @@ export function mergeDataWithKey(data) {
 }
 
 export function getBoardKey() {
-  return window.location.href.split("/").pop();
+  const arr = window.location.href.split("/");
+  return arr[4];
 }
 
 export function byPropKey(propertyName, value) {
