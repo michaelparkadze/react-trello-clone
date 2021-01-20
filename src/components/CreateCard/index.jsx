@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import "./styles.scss";
 
 export default function CreateCard(props) {
@@ -15,11 +15,13 @@ export default function CreateCard(props) {
     }
   };
 
+  const { TextArea } = Input;
+
   return (
     <div className="create-card">
       {creatingCard ? (
         <div className="create-card-form-container">
-          <textarea
+          <TextArea
             value={cardTitle}
             placeholder="Enter the title for this card..."
             onSubmit={(event) => handleOnSubmit(event)}
@@ -27,9 +29,10 @@ export default function CreateCard(props) {
             //   setCardTitle("");
             //   handleCreatingCard(false);
             // }}
+            rows={2}
             onChange={(e) => setCardTitle(e.target.value)}
             autoFocus
-          ></textarea>
+          />
           <Button
             type="primary"
             style={{
@@ -40,6 +43,7 @@ export default function CreateCard(props) {
               marginRight: "8px",
             }}
             onClick={(event) => handleOnSubmit(event)}
+            // disabled={cardTitle === ""}
           >
             Create
           </Button>
