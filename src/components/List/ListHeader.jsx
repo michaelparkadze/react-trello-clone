@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, Dropdown, Button, Space } from "antd";
+import { Menu, Dropdown, Button, Space, Input } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 export default function ListHeader(props) {
@@ -35,14 +35,8 @@ export default function ListHeader(props) {
 
   const menu = (
     <Menu>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.alipay.com/"
-        >
-          Delete this list
-        </a>
+      <Menu.Item onClick={() => handleDeleteList(listKey)}>
+        Delete this list
       </Menu.Item>
     </Menu>
   );
@@ -58,7 +52,7 @@ export default function ListHeader(props) {
             handleFormSubmit(event, handleUpdateList, listKey, listHeader)
           }
         >
-          <input
+          <Input
             type="text"
             value={listHeader}
             onChange={(e) => handleInputChange(e)}
@@ -72,7 +66,12 @@ export default function ListHeader(props) {
       )}
       <Space direction="vertical">
         <Space wrap>
-          <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
+          <Dropdown
+            overlay={menu}
+            trigger={["click"]}
+            placement="bottomRight"
+            style={{ backgroundColor: "red" }}
+          >
             <Button
               shape="circle"
               style={{ border: "none", boxShadow: "none" }}

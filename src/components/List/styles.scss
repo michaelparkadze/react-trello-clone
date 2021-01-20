@@ -26,6 +26,19 @@
       justify-content: space-between;
       font-size: 1.125rem;
       margin-bottom: 12px;
+      > form {
+        > input {
+          font-size: 1.125rem;
+          padding: 0;
+          // outline: none;
+          // border: none;
+          // padding: 2px 0px;
+          // background-color: rgba(245, 250, 255, 1);
+          border-radius: 8px;
+          // border: 1px solid rgb(224, 229, 224);
+          // border-radius: 12px;
+        }
+      }
       .list-menu {
         font-size: 18px;
         padding-right: 2px;
@@ -43,7 +56,14 @@
       min-height: 0;
     }
   }
-  &:hover {
-    // cursor: pointer;
+}
+.ant-dropdown-menu {
+  background-color: #fff;
+  box-shadow: none;
+  color: rgb(60, 64, 82);
+  border: 1px solid rgb(224, 229, 224);
+  border-radius: 12px;
+  > li {
+    border-radius: 8px;
   }
 }
