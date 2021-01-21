@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { firebase } from "../../firebase/";
 import { Input, Form, Button } from "antd";
 import { doPasswordUpdate } from "../../firebase/auth";
-import { byPropKey } from "../../utils";
+import { useHistory } from "react-router-dom";
 import { LockOutlined } from "@ant-design/icons";
 import "./styles.scss";
 
@@ -11,6 +11,8 @@ export default function Account() {
   const [password, setPassword] = useState("");
   const [passwordTwo, setPasswordTwo] = useState("");
   const [error, setError] = useState(null);
+
+  const history = useHistory();
 
   useEffect(() => {
     firebase.auth.onAuthStateChanged((authUser) => {
@@ -28,8 +30,9 @@ export default function Account() {
           setPasswordTwo("");
           setError(null);
           alert("Password was changed successfully");
+          history.push("/boards");
         })
-        .catch((err) => setError(byPropKey("error", err.message)));
+        .catch((err) => setError(err.message));
     } else {
       setError("Passwords do not match");
     }
