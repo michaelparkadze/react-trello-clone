@@ -16,6 +16,8 @@ export default function List(props) {
     listTitle,
     listKey,
     handleCreateCard,
+    handleEditCard,
+    handleDeleteCard,
     handleUpdateList,
     handleDeleteList,
     index,
@@ -68,6 +70,8 @@ export default function List(props) {
                           cardKey={card.key}
                           title={card.title}
                           listKey={listKey}
+                          handleEditCard={handleEditCard}
+                          handleDeleteCard={handleDeleteCard}
                         />
                       ))}
                     {provided.placeholder}

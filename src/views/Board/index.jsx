@@ -97,6 +97,46 @@ export default function Board() {
       });
   };
 
+  const handleEditCard = (params) => {
+    const { listKey, cardKey, card } = params;
+
+    return db.doEditCard(listKey, cardKey, card).then(() => {
+      const updatedCards = [...cards];
+      // cards have listKey and all cards
+      // find the cards of list key and find card out of cards.cards
+      const listIndex = cards.findIndex((card) => card.listKey === listKey);
+      const cardIndex = cards[listIndex].cards.findIndex(
+        (card) => card.key === cardKey
+      );
+
+      updatedCards[listIndex].cards[cardIndex] = {
+        ...updatedCards[listIndex].cards[cardIndex],
+        ...card,
+      };
+      setCards(updatedCards);
+    });
+  };
+
+  const handleDeleteCard = (params) => {
+    const { listKey, cardKey } = params;
+
+    return db.doDeleteCard(listKey, cardKey).then(() => {
+      console.log(cards);
+      console.log(listKey);
+      console.log(cardKey);
+      const cardsClone = [...cards];
+
+      const listIndex = cardsClone.findIndex(
+        (card) => card.listKey === listKey
+      );
+      const updatedCards = cardsClone[listIndex].cards.filter(
+        (card) => card.key !== cardKey
+      );
+
+      setCards(updatedCards);
+    });
+  };
+
   const handleUpdateList = (listKey, title) => {
     return db.doUpdateList(boardKey, listKey, { title }).then((res) => {
       const copiedLists = [...lists];
@@ -275,6 +315,8 @@ export default function Board() {
                             cards={listCards}
                             setCards={handleSetCards}
                             handleCreateCard={handleCreateCard}
+                            handleEditCard={handleEditCard}
+                            handleDeleteCard={handleDeleteCard}
                             setDataFetched={setDataFetched}
                             index={index}
                             title={list.title}

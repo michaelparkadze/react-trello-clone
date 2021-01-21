@@ -1,7 +1,7 @@
 .list-container {
   width: 292px;
   margin: 0px 4px;
-  padding: 16px;
+  padding: 16px 0;
   // height: calc(100% - 16px);
   box-sizing: border-box;
   display: inline-block;
@@ -26,6 +26,7 @@
       justify-content: space-between;
       font-size: 1.125rem;
       margin-bottom: 12px;
+      padding: 0 16px;
       > form {
         > input {
           font-size: 1.125rem;
@@ -48,6 +49,7 @@
       }
     }
     &__cards {
+      padding: 0 16px;
       flex: 1 1 auto;
       margin-bottom: 0;
       overflow-y: auto;
