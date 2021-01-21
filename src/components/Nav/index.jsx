@@ -1,14 +1,27 @@
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
 import { Menu, Dropdown, Button, Space, Input } from "antd";
-import { HomeOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  SettingOutlined,
+  UserOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import "./styles.scss";
 
 export default function Nav() {
   const menu = (
     <Menu>
-      <Menu.Item>Settings</Menu.Item>
-      <Menu.Item onClick={auth.doSignOut}>Sign out</Menu.Item>
+      <Menu.Item>
+        <Link to="/account">
+          <UserOutlined />
+          Account
+        </Link>
+      </Menu.Item>
+      <Menu.Item onClick={auth.doSignOut}>
+        <LogoutOutlined />
+        Sign out
+      </Menu.Item>
     </Menu>
   );
 

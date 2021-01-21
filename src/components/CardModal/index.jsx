@@ -142,27 +142,6 @@ export default function CardModal(props) {
           )}
         </div>
       </div>
-      {/* <Details>
-        <CardDetail
-          title={<h4>Labels</h4>}
-          icon={<Icon type="tag" />}
-          content={
-            <CardLabel card={card} listKey={listKey} onEditCard={onEditCard} />
-          }
-        />
-
-        <CardDetail
-          icon={<StyledIcon type="align-left" />}
-          title={<h4>Description</h4>}
-          content={
-            <CardDescription
-              card={card}
-              listKey={listKey}
-              onEditCard={onEditCard}
-            />
-          }
-        />
-      </Details> */}
     </Modal>
   );
 }

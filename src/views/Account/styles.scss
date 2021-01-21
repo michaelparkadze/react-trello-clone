@@ -1,0 +1,15 @@
+.account-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 24px;
+  max-width: 400px;
+  margin: 0 auto;
+  .account-details {
+  }
+  .account-form {
+    width: 100%;
+  }
+}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Button, Icon, Menu, Dropdown, Input } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { Button, Menu, Dropdown, Input } from "antd";
 import "./styles.scss";
 
 export default function BoardTitle(props) {
@@ -76,7 +75,7 @@ export default function BoardTitle(props) {
           }
           trigger={["click"]}
         >
-          <Button> Show Menu</Button>
+          <Button>Show Menu</Button>
         </Dropdown>
       </div>
     </div>
