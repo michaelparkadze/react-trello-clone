@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Button, Input } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import CardModal from "../CardModal";
 import "./styles.scss";
 
 export default function Card(props) {
+  const [showModal, setShowModal] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cardTitle, setCardTitle] = useState("");
@@ -12,6 +14,7 @@ export default function Card(props) {
   const {
     index,
     title,
+    description,
     cardKey,
     listKey,
     handleEditCard,
@@ -20,6 +23,7 @@ export default function Card(props) {
 
   useEffect(() => {
     setCardTitle(title);
+    console.log(props);
   }, []);
 
   const handleTitleChange = (e) => {
@@ -42,6 +46,14 @@ export default function Card(props) {
     setEditing(false);
   };
 
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleHideModal = () => {
+    setShowModal(false);
+  };
+
   const handleSubmitForm = (event, callback, listKey, cardKey, title) => {
     event.preventDefault();
 
@@ -55,69 +67,76 @@ export default function Card(props) {
   };
 
   return (
-    <Draggable draggableId={String(cardKey)} index={index}>
-      {(provided) => (
-        <>
-          <div
-            className="card-container"
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-            onMouseEnter={handleShowIcons}
-            onMouseLeave={handleHideIcons}
-            onBlur={handleDisableEditing}
-          >
-            <div className="card-container__content">
-              {editing ? (
-                <form
-                  onSubmit={(event) =>
-                    handleSubmitForm(
-                      event,
-                      handleEditCard,
-                      listKey,
-                      cardKey,
-                      title
-                    )
-                  }
-                >
-                  <Input
-                    value={cardTitle}
-                    onChange={(event) => handleTitleChange(event)}
-                    autoFocus
-                  />
-                </form>
-              ) : (
-                <>
-                  {showIcons && (
-                    <div
-                      className="card-icons"
-                      onClick={(event) => event.stopPropagation()}
-                    >
-                      <Button
-                        onClick={handleEnableEditing}
-                        icon={<EditOutlined />}
-                        style={{ fontSize: 8, border: "none" }}
-                      ></Button>
-                      <Button
-                        onClick={() =>
-                          onDeleteCard(handleDeleteCard, listKey, cardKey)
-                        }
-                        icon={<DeleteOutlined />}
-                        style={{ fontSize: 8, border: "none" }}
-                      ></Button>
-                    </div>
-                  )}
-                  <div>{title}</div>
-                </>
-              )}
+    <>
+      <Draggable draggableId={String(cardKey)} index={index}>
+        {(provided) => (
+          <>
+            <div
+              className="card-container"
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              onMouseEnter={handleShowIcons}
+              onMouseLeave={handleHideIcons}
+              onBlur={handleDisableEditing}
+            >
+              <div className="card-container__content">
+                {editing ? (
+                  <form
+                    onSubmit={(event) =>
+                      handleSubmitForm(
+                        event,
+                        handleEditCard,
+                        listKey,
+                        cardKey,
+                        title
+                      )
+                    }
+                  >
+                    <Input
+                      value={cardTitle}
+                      onChange={(event) => handleTitleChange(event)}
+                      autoFocus
+                    />
+                  </form>
+                ) : (
+                  <div onClick={() => handleShowModal()}>
+                    {showIcons && (
+                      <div
+                        className="card-icons"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <Button
+                          onClick={handleEnableEditing}
+                          icon={<EditOutlined />}
+                          style={{ fontSize: 8, border: "none" }}
+                        ></Button>
+                        <Button
+                          onClick={() =>
+                            onDeleteCard(handleDeleteCard, listKey, cardKey)
+                          }
+                          icon={<DeleteOutlined />}
+                          style={{ fontSize: 8, border: "none" }}
+                        ></Button>
+                      </div>
+                    )}
+                    <div>{title}</div>
+                  </div>
+                )}
+              </div>
             </div>
-            {/* <div className="card-container__options">
-              <div className="edit"></div>
-              <div className="delete"></div>
-            </div> */}
-          </div>
-        </>
-      )}
-    </Draggable>
+          </>
+        )}
+      </Draggable>
+      <CardModal
+        visible={showModal}
+        cardTitle={cardTitle}
+        cardDescription={description}
+        cardKey={cardKey}
+        listKey={listKey}
+        handleEditCard={handleEditCard}
+        handleHideModal={handleHideModal}
+      />
+    </>
   );
 }

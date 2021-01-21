@@ -69,6 +69,7 @@ export default function List(props) {
                           index={index}
                           cardKey={card.key}
                           title={card.title}
+                          description={card.description ? card.description : ""}
                           listKey={listKey}
                           handleEditCard={handleEditCard}
                           handleDeleteCard={handleDeleteCard}
