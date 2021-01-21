@@ -1,16 +1,31 @@
 .board-topbar {
   padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
   background-color: rgb(248, 249, 251);
-  .board-title {
-    border: none;
-    box-shadow: none;
-    background: none;
-    padding: 0px 12px;
-    height: 38px;
-    font-weight: 500;
-    font-size: 1.125rem;
-    &:hover {
-      background-color: rgb(234, 235, 236);
+  .left {
+    .board-title {
+      border: none;
+      box-shadow: none;
+      background: none;
+      padding: 0px 12px;
+      height: 38px;
+      font-weight: 500;
+      font-size: 1.125rem;
+      &:hover {
+        background-color: rgb(234, 235, 236);
+      }
+    }
+  }
+  .right {
+    > button {
+      height: 38px;
+      border: none;
+      box-shadow: none;
+      background: none;
+      &:hover {
+        background-color: rgb(234, 235, 236);
+      }
     }
   }
 }

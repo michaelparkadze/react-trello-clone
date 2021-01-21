@@ -7,6 +7,7 @@ import "./styles.scss";
 export default function Nav() {
   const menu = (
     <Menu>
+      <Menu.Item>Settings</Menu.Item>
       <Menu.Item onClick={auth.doSignOut}>Sign out</Menu.Item>
     </Menu>
   );

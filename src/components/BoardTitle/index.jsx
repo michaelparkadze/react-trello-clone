@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form, Button, Icon, Menu, Dropdown, Input } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 import "./styles.scss";
 
 export default function BoardTitle(props) {
@@ -39,7 +40,7 @@ export default function BoardTitle(props) {
   const { title, boardKey, updateBoard, deleteBoard } = props;
   return (
     <div className="board-topbar">
-      <>
+      <div className="left">
         {editing ? (
           <form
             onSubmit={(event) => {
@@ -63,7 +64,21 @@ export default function BoardTitle(props) {
             {title}
           </Button>
         )}
-      </>
+      </div>
+      <div className="right">
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="0" onClick={() => deleteBoard(boardKey)}>
+                Delete board
+              </Menu.Item>
+            </Menu>
+          }
+          trigger={["click"]}
+        >
+          <Button> Show Menu</Button>
+        </Dropdown>
+      </div>
     </div>
   );
 }
