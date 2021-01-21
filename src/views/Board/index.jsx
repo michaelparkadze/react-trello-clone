@@ -121,19 +121,19 @@ export default function Board() {
     const { listKey, cardKey } = params;
 
     return db.doDeleteCard(listKey, cardKey).then(() => {
-      console.log(cards);
-      console.log(listKey);
-      console.log(cardKey);
       const cardsClone = [...cards];
 
       const listIndex = cardsClone.findIndex(
         (card) => card.listKey === listKey
       );
+
       const updatedCards = cardsClone[listIndex].cards.filter(
         (card) => card.key !== cardKey
       );
 
-      setCards(updatedCards);
+      cardsClone[listIndex].cards = updatedCards;
+
+      setCards(cardsClone);
     });
   };
 
