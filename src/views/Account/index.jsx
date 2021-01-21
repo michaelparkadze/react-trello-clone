@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { firebase } from "../../firebase/";
 import { Input, Form, Button } from "antd";
-
 import { doPasswordUpdate } from "../../firebase/auth";
 import { byPropKey } from "../../utils";
 import { LockOutlined } from "@ant-design/icons";
 import "./styles.scss";
-import Password from "antd/lib/input/Password";
 
 export default function Account() {
   const [user, setUser] = useState(null);

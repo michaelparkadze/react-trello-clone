@@ -57,9 +57,8 @@ export default function Card(props) {
   const handleSubmitForm = (event, callback, listKey, cardKey, title) => {
     event.preventDefault();
 
-    callback(listKey, cardKey, { title: cardTitle }).then(() =>
-      setEditing(false)
-    );
+    const card = { title: cardTitle };
+    callback({ listKey, cardKey, card }).then(() => setEditing(false));
   };
 
   const onDeleteCard = (callback, listKey, cardKey) => {
