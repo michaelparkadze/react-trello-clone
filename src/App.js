@@ -16,8 +16,8 @@ function App() {
           zIndex: "1000",
         }}
       >
-        Built with ❤️ by{" "}
-        <Button type="link" style={{ padding: 0 }}>
+        Built with <span style={{ marginRight: 4 }}>❤️</span> by
+        <Button type="link" style={{ padding: 0, marginLeft: 4 }}>
           <a href="https://www.michaelparkadze.com/" target="_blank">
             Michael Parkadze
           </a>
